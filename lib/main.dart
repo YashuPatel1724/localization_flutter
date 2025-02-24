@@ -4,6 +4,7 @@ import 'package:localization_flutter/provider/language_provider.dart';
 import 'package:localization_flutter/view/screen/home_screen.dart';
 import 'package:localization_flutter/view/screen/languageSelect.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,18 +18,22 @@ Future<void> main() async {
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LocaleProvider>(context);
     return MaterialApp(
-      supportedLocales: provider.localization.supportedLocales.isNotEmpty
-          ? provider.localization.supportedLocales
-          : [const Locale('en')],
-      localizationsDelegates: provider.localization.localizationsDelegates,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      locale: provider.locale,
+      supportedLocales: [
+        Locale('en'),
+        Locale('hi'),
+        Locale('gu'),
+        Locale('es'),
+      ],
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home:  HomeScreen(setLocale: provider.setLocale,),
     );
   }
+
 }
 

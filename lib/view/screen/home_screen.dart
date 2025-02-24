@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
-import 'package:provider/provider.dart';
-import 'package:localization_flutter/global/global.dart';
+import 'dart:ui';
 
-import '../../provider/language_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function setLocale;
+
+  const HomeScreen({super.key, required this.setLocale});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,40 +15,121 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<LocaleProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
+    List<String> verses = [
+      localizations.verse1,
+      localizations.verse2,
+      localizations.verse3,
+      localizations.verse4,
+      localizations.verse5,
+      localizations.verse6,
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocale.title.getString(context),),
+        backgroundColor: Color(0xff401A03),
+        title: SizedBox(
+          child: Text(
+            localizations.gitaName,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
         centerTitle: true,
         actions: [
           PopupMenuButton<String>(
+            color: Color(0xff401A03),
             onSelected: (String languageCode) {
-              provider.setLocale(Locale(languageCode));
+              widget.setLocale(Locale(languageCode));
+              print(languageCode);
             },
             itemBuilder: (BuildContext context) {
               return [
-                const PopupMenuItem(value: 'en', child: Text("English")),
-                const PopupMenuItem(value: 'hi', child: Text("Hindi")),
-                const PopupMenuItem(value: 'es', child: Text("Spanish")),
-                const PopupMenuItem(value: 'ko', child: Text("Korean")),
+                const PopupMenuItem(
+                  value: 'en',
+                  child: Text(
+                    "English",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'hi',
+                  child: Text(
+                    "Hindi",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'gu',
+                  child: Text(
+                    "Gujarati",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'es',
+                  child: Text(
+                    "Spanish",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               ];
             },
-            icon: const Icon(Icons.more_vert),
+            icon: Icon(Icons.more_vert, color: Colors.white),
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              textAlign: TextAlign.center,
-              AppLocale.paragraph.getString(context),
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,fontFamily: provider.currentFontFamily),
+      body: Stack(
+        children: [
+          SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Image.asset('assets/images/gita-101.jpg', fit: BoxFit.cover),
+          ),
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.black.withOpacity(0.4),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+            child: ListView.builder(
+              itemCount: verses.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 4,
+                  color: Colors.black38,
+                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "${verses[index]}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
