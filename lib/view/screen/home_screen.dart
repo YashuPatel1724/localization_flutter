@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "${verses[index]}",
+                      verses[index],
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,

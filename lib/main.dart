@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:localization_flutter/provider/language_provider.dart';
 import 'package:localization_flutter/view/screen/home_screen.dart';
-import 'package:localization_flutter/view/screen/languageSelect.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
