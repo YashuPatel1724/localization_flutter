@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:localization_flutter/provider/language_provider.dart';
+import 'package:localization_flutter/view/screen/detail_page.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function setLocale;
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    var provider= Provider.of<LocaleProvider>(context);
     final localizations = AppLocalizations.of(context)!;
     List<String> verses = [
       localizations.verse1,
@@ -110,18 +114,24 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemCount: verses.length,
               itemBuilder: (context, index) {
-                return Card(
-                  elevation: 4,
-                  color: Colors.black38,
-                  margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      verses[index],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                return GestureDetector(
+                  onTap: () {
+                    provider.selectedVerse(index);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailPage(),));
+                  },
+                  child: Card(
+                    elevation: 4,
+                    color: Colors.black38,
+                    margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        verses[index],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
